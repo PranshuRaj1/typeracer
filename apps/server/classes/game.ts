@@ -126,7 +126,7 @@ export class Game {
       score: 0,
     });
 
-    socket.emit("player", this.players);
+    socket.emit("players", this.players);
     socket.emit("new_user", this.gameHost);
 
     this.setupListeners(socket);
