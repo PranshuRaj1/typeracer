@@ -11,7 +11,7 @@ import { Textarea } from "./ui/textarea";
 export default function GamePlayer({ gameId, name }: GameProps) {
   const [ioInstance, setIoInstance] = useState<Socket>();
   const [players, setPlayers] = useState<Player[]>([]);
-  const [gameStatus, setGameStatus] = useState<GameStatus>("pending");
+  const [gameStatus, setGameStatus] = useState<GameStatus>("not-started");
   const [paragraph, setParagraph] = useState<string>("");
   const [host, setHost] = useState<string>("");
   const [inputParagraph, setInputParagraph] = useState<string>("");
@@ -37,7 +37,7 @@ export default function GamePlayer({ gameId, name }: GameProps) {
 
   // useEffect for detecting changes in input paragraph
   useEffect(() => {
-    if (!ioInstance || gameStatus !== "started") return;
+    if (!ioInstance || gameStatus !== "in-progress") return;
 
     ioInstance.emit("player-typed", inputParagraph);
   }, [inputParagraph]);
@@ -78,7 +78,7 @@ export default function GamePlayer({ gameId, name }: GameProps) {
 
     ioInstance.on("game-started", (paragraph: string) => {
       setParagraph(paragraph);
-      setGameStatus("started");
+      setGameStatus("in-progress");
     });
 
     ioInstance.on("game-finished", () => {
@@ -144,7 +144,7 @@ export default function GamePlayer({ gameId, name }: GameProps) {
 
       {/* Game */}
       <div className="lg:col-span-2 h-full">
-        {gameStatus === "pending" && (
+        {gameStatus === "not-started" && (
           <div className="flex flex-col items-center justify-center p-10">
             <h1 className="text-2xl font-bold">
               Waiting for players to join...
@@ -158,7 +158,7 @@ export default function GamePlayer({ gameId, name }: GameProps) {
           </div>
         )}
 
-        {gameStatus === "started" && (
+        {gameStatus === "in-progress" && (
           <div className="h-full">
             <h1 className="text-2xl font-bold mb-10">
               Type the paragraph below
@@ -172,7 +172,7 @@ export default function GamePlayer({ gameId, name }: GameProps) {
                 onChange={(e) => setInputParagraph(e.target.value)}
                 className="text-2xl lg:text-5xl outline-none p-5 absolute top-0 left-0 right-0 bottom-0 z-10 opacity-75"
                 placeholder=""
-                disabled={gameStatus !== "started" || !ioInstance}
+                disabled={gameStatus !== "in-progress" || !ioInstance}
               />
             </div>
           </div>

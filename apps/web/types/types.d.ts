@@ -1,7 +1,7 @@
 export type Player = {
   id: string;
-  score: number;
   name: string;
+  score: number;
 };
 
 export type PlayerScore = {
@@ -9,9 +9,9 @@ export type PlayerScore = {
   score: number;
 };
 
-export type GameStatus = "pending" | "started" | "finished";
+export type GameStatus = "not-started" | "in-progress" | "finished";
 
 export type GameProps = {
-  gameId: string;
   name: string;
+  gameId: string;
 };

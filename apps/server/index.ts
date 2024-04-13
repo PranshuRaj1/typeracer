@@ -1,9 +1,11 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { setupListeners } from "./setupListeners";
+
 const PORT = process.env.PORT || 8080;
 
 const httpServer = createServer();
+
 const io = new Server(httpServer, {
   cors: {
     origin: "*",
@@ -13,6 +15,4 @@ const io = new Server(httpServer, {
 
 setupListeners(io);
 
-httpServer.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+httpServer.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

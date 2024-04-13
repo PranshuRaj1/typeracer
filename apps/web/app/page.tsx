@@ -1,11 +1,12 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 import { toast } from "sonner";
-import { v4 as uuid } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Home() {
   const router = useRouter();
@@ -17,20 +18,18 @@ export default function Home() {
 
     const inviteCode = formData.get("inviteCode") as string;
 
-    if (!inviteCode) {
-      return toast.error("Please enter an invite code");
-    }
+    if (!inviteCode) return toast.error("Invite code is required");
 
     router.push(`/game/${inviteCode}`);
   }
 
-  const createGame = () => {
-    const inviteCode = uuid();
+  function createGame() {
+    const inviteCode = uuidv4();
     router.push(`/game/${inviteCode}`);
-  };
+  }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="w-full mx-auto max-w-5xl p-5">
       <h1 className="font-bold text-4xl mt-10">Typing Battle</h1>
       <p className="mt-5 text-gray-400 text-lg">
         Go on a typing battle with your friends and see which one of you types
